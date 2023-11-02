@@ -1,2 +1,2 @@
 # algorithm
-[ALGORITHM] 알고리즘 공부를 효율적으로 하기 위한 레포지토리
+[ALGORITHM] 알고리즘을 공부하며 정리하기 위한 레포지토리
