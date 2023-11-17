@@ -14,6 +14,27 @@ ex) PG 다리를 지나는 트럭
 
 - [[][[]]] -> 이런 종류의 문제 stack 유리
 
+- 오큰수 : while문과 stack 활용
+```python
+n = int(input())
+arr = list(map(int, input().split()))
+answer = [-1 for _ in range(n)]
+stack = []
+
+for i in range(n):
+  while stack and arr[stack[-1]] < arr[i]: 
+    answer[stack.pop()] = arr[i]
+  stack.append(i)
+
+for i in range(n):
+  print(answer[i], end=' ')
+```
+```
+다음과 같이 하나씩 돌면서 numbers[i]가 '가까운 가장 큰 수'인  것들을 stack에서 뽑으면서 값을 할당하는 것이다.
+그리고 stack에는 다시 index 값 i를 넣는다. -> 얘도 판단의 미로 속으로 들여보내는 것.! 나중에 stack에서 뽑히면 가장 가까운 큰 수가 할당될 예정이다.
+
+뒤에 큰 수가 더이상 없는 경우들이 있을 때는 -1로 출력해주기로 했으므로 answer는 -1로 초기화시킨다.
+```
 ## deq
 - 시뮬레이션에서 deq에서 popleft()와 pop() 방향 주의
 
