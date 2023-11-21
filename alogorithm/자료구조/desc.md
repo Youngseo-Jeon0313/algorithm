@@ -41,3 +41,10 @@ for i in range(n):
 - deque은 시뮬레이션에서, 이럴 때 강하다! 상하 좌우로 움직이며 조건에 만족하는 것을 포함시키고자 할 때    
 만약 2차원 배열 안에서    
 특정 퍼즐모양을 여러 개 찾고자 한다면 이중 덱도 사용 가능하다.
+
+## dict
+-> from collections import defaultdict
+하면 defaultdict(int) 시 0으로 자동 생성되기 때문에 +=1 등의 처리를 해줘도 된다.
+dict는 key가 문장일 때 강력하다.
+아래와 같이 리스트와 딕셔너리를 같이 사용 가능 !
+menus = [{} for _ in range(11)]
