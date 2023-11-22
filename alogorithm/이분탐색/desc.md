@@ -38,6 +38,9 @@ def upperbound(array, k): # k 초과 값이 처음 나오는 위치
 
     return left  
 ```
+![img.png](img.png)
+
+
 
 ### 시간복잡도
 N = 10만 또는 100만 일 때 유력 !
