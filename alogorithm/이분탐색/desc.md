@@ -6,7 +6,7 @@
 
 ### 파이썬 upper bound, lower bound
 ```python
-def lowerbound(array, k):
+def lowerbound(array, k): #k 이상 값이 처음 나오는 위치
     left = 0
     right = len(array)
 
@@ -23,7 +23,7 @@ def lowerbound(array, k):
 ```
 
 ```python
-def upperbound(array, k):
+def upperbound(array, k): # k 초과 값이 처음 나오는 위치
     left = 0
     right = len(array)
     
