@@ -9,3 +9,15 @@ tempList = [] 로 초기화해두고
 for문을 돌면서 만약 max 값이 갱신되면 tempList 자체를 새롭게 만들고 
 그게 아니라면 tempList에 여러 값들이 나올때마다 append
   (프로그래머스 메뉴 리뉴얼)
+- 배열에서 y, x 좌표 주의
+- input 받을 때int/str처리 주의
+  - 0,1,2, .. A,B,C ..
+
+### dictionary에서 key, value 바꿀 때
+```python
+dict_reverse = dict((v,k) for k,v in dict.items())
+```
+
+
+### 인덱스 오류 날 수 있는 것들 최대한 테스트케이스 만들어보기 !!
+- 구현 문제에서는 인덱스 오류가 날 수 없도록 문제가 출제되어 있을 거다 !
