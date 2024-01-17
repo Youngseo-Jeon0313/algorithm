@@ -1,27 +1,15 @@
-#2011
-'''
-경우
-- 건너뛴다.
-- 수를 넣는다.
-    - 앞 숫자랑 합친다. = 합칠 수 있는지 봐야 하고, 앞앞 상황 반영
-    - 안 합친다. = 앞 상황 반영
-22114
-'''
-dict = {str(i+1):chr(ord('A')+i) for i in range(26)}
-N=(input())
-N=' '+N
-LEN = len(N)
+# [PG] 달리기 경주
 
-List = [0 for _ in range(LEN+1)] #건너뛴다/수를 넣는다.
+# 인덱스 조회를 dictionary로 
+def solution(players, callings):
+    dict_name = {}  # name:index 
+    for i in range(len(players)):
+        dict_name[players[i]] = i
+    for j in callings:
+        j_index = dict_name[j]  # 그 이름을 가진애의 index를 가져와
+        dict_name[j] -= 1  # 일단 그 이름의 아이의 index를 하나 낮춰
+        dict_name[players[j_index - 1]] += 1
+        players[j_index], players[j_index - 1] = players[j_index - 1], players[j_index]
 
-for i in range(LEN):
-    temp = 0
-    if i>0 and N[i-1:i+1] in dict.keys():
-        temp+=max(1,1*List[i-2])
-    if N[i] in dict.keys():  # 2다.
-        temp += max(1,1*List[i-1])
-    List[i]=temp
-    if i>0 and temp==0: print(0); exit()
-
-
-print(List[LEN-1]%1000000)
+        # print(players)
+    return players
