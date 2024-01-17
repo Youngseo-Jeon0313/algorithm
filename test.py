@@ -1,15 +1,21 @@
-# [PG] 달리기 경주
+# [PG] 요격 시스템
 
-# 인덱스 조회를 dictionary로 
-def solution(players, callings):
-    dict_name = {}  # name:index 
-    for i in range(len(players)):
-        dict_name[players[i]] = i
-    for j in callings:
-        j_index = dict_name[j]  # 그 이름을 가진애의 index를 가져와
-        dict_name[j] -= 1  # 일단 그 이름의 아이의 index를 하나 낮춰
-        dict_name[players[j_index - 1]] += 1
-        players[j_index], players[j_index - 1] = players[j_index - 1], players[j_index]
+'''
+어차피 다 적용해줘야 해서 그리디임
+우선 정렬하자 !
+'''
 
-        # print(players)
-    return players
+def solution(targets):
+    targets = sorted(targets, key=lambda x:x[1])
+    #맨 뒤에서부터 한 개씩 가장 메인이 되는 애들 가져옴
+    main_left, main_right = targets[0] #10, 14
+    answer = 1
+    for i in range(len(targets)):
+        #그 사이에 겹치는 게 있는지 체크
+        left, right = targets[i]
+        #print(main_left, main_right, left, right)
+        if main_right<=left: #바깥으로 나간 경우
+            main_left, main_right = left, right
+            answer+=1
+    return answer
+
