@@ -1,15 +1,39 @@
-# 바탕화면 정리
+#리코챗 로봇
 
-def solution(wallpaper):
-    min_x, min_y, max_x, max_y = float('inf'), float('inf'), -float('inf'), -float('inf')
-    for i in range(len(wallpaper)):
-        for j in range(len(wallpaper[0])):
-            if wallpaper[i][j]=='#':
-                print('here', i, j)
-                min_x = min(min_x, j)
-                min_y = min(min_y,i)
-                max_x = max(max_x,j+1)
-                max_y = max(max_y,i+1)
-    #print(min_x, max_x, min_y, max_y)
-    answer = [min_y, min_x, max_y, max_x]
+from collections import deque
+
+def solution(board):
+    dx, dy = [-1,1,0,0], [0,0,-1,1]
+    goal = []
+    deq = deque([]) #y,x
+    visited=[[0 for _ in range(len(board[0]))] for _ in range(len(board))]
+
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j]=='G':
+                goal = [i,j]
+            elif board[i][j]=='R':
+                deq.append([i,j,1])
+                visited[i][j]=1
+    while deq:
+        #print(deq)
+        y,x,step = deq.popleft()
+        for i in range(4):
+            ny, nx = y, x
+            while True:
+                ny = ny+dy[i]; nx = nx+dx[i]
+                if 0<=nx<len(board[0]) and 0<=ny<len(board) and board[ny][nx]=='D': #만나게 되면 #만나게 되면
+                    ny-=dy[i]; nx-=dx[i]
+                    break
+                elif nx<0 or nx>=len(board[0]) or ny<0 or ny>=len(board):
+                    ny-=dy[i]; nx-=dx[i]
+                    break
+            if not visited[ny][nx]:
+                visited[ny][nx]=step+1
+                deq.append([ny,nx,step+1])
+    print(visited)
+    if visited[goal[0]][goal[1]]>0:
+        answer = visited[goal[0]][goal[1]]-1
+    else:
+        answer = -1
     return answer
