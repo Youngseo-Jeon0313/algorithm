@@ -1,19 +1,15 @@
-# 숫자 변환하기
+# 바탕화면 정리
 
-# 그리디 + DP
-def solution(x, y, n):
-    answer = -1
-    DP = [float('inf') for _ in range(y+1)]
-    #init
-    DP[x]=0
-    for i in range(x,y+1):
-        if i+n<=y:
-            DP[i+n]=min(DP[i+n], DP[i]+1)
-        if 2*i<=y:
-            DP[2*i]=min(DP[2*i], DP[i]+1)
-        if 3*i<=y:
-            DP[3*i]=min(DP[3*i], DP[i]+1)
-    #print(DP[y])
-    if DP[y]!=float('inf'):
-        answer = DP[y]
+def solution(wallpaper):
+    min_x, min_y, max_x, max_y = float('inf'), float('inf'), -float('inf'), -float('inf')
+    for i in range(len(wallpaper)):
+        for j in range(len(wallpaper[0])):
+            if wallpaper[i][j]=='#':
+                print('here', i, j)
+                min_x = min(min_x, j)
+                min_y = min(min_y,i)
+                max_x = max(max_x,j+1)
+                max_y = max(max_y,i+1)
+    #print(min_x, max_x, min_y, max_y)
+    answer = [min_y, min_x, max_y, max_x]
     return answer
