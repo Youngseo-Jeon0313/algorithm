@@ -1,30 +1,36 @@
-'''
-ABCDE
-(A)(BCDE)
-(AB)(CDE)
-(ABC)(DE)
-(ABCD)(E)
+# 시소 짝꿍
 
-ANS 배열 따로 갱신
-'''
+def solution(weights):
+    #weights = [100,100,100,100,100,100,200, 200, 200]
+    List = [0 for _ in range(10001)]
+    for weight in weights:
+        List[weight]+=1
+    answer = 0
+    weights=sorted(weights)
+    for i in weights:
+        if i*1<10001 :
+            if List[i]>1:
+                #print(i,i)
+                answer+=(List[i]*(List[i]-1))//2
+        if i*3%2==0 and i*3//2 < 10001:
+            if List[i*3//2]:
+                #print(i,i*3//2)
+                answer+=List[i]*List[i*3//2]
+        if i*2 and i*2<10001:
+            if List[i*2]:
+                #print(i,i*2)
+                answer+=List[i]*List[i*2]
+        if i*4%3==0 and i*4//3 < 10001:
+            if List[i*4//3]:
+                #print(i,i*4//3)
+                answer+=List[i]*List[i*4//3]
+        List[i]=0
+    return answer
 
-#11066
-T=int(input())
-for _ in range(T):
-    N=int(input())
-    List = list(map(int,input().split()))
-    DP=[[float('inf') for _ in range(N)] for _ in range(N)]
-    ANS=[[float('inf') for _ in range(N)] for _ in range(N)]
-    for i in range(N): # step
-        for j in range(N-i):
-            if i==0:
-                DP[j][j]=List[j]
-                ANS[j][j]=0
-            elif i==1: #step 1 처리
-                DP[j][j+i]=List[j]+List[j+i]
-                ANS[j][j+i]=List[j]+List[j+i]
-            else:
-                for k in range(j,j+i): #해당 index를 채우기 위해 여러 step들에서 끌어오기
-                    DP[j][j+i]=min(DP[j][j+i],DP[j][k]+DP[k+1][j+i])
-                    ANS[j][j+i]=min(ANS[j][j+i],DP[j][k]+DP[k+1][i+j]+ANS[j][k]+ANS[k+1][i+j])
-    print(ANS[0][N-1])
+# nC2 갯수 -> 그냥 계산 가능 (n*(n-1))//2
+'''testcase
+100,100,100,100,100,100->15
+100,100,100,100,100,100,200 ->21
+100,100,100,100,100,100,200,200,200 -> 36
+
+'''
