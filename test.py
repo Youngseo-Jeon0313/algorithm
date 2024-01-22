@@ -1,36 +1,36 @@
-# 시소 짝꿍
-
-def solution(weights):
-    #weights = [100,100,100,100,100,100,200, 200, 200]
-    List = [0 for _ in range(10001)]
-    for weight in weights:
-        List[weight]+=1
+### 마법의 엘리베이터
+def solution(storey):
     answer = 0
-    weights=sorted(weights)
-    for i in weights:
-        if i*1<10001 :
-            if List[i]>1:
-                #print(i,i)
-                answer+=(List[i]*(List[i]-1))//2
-        if i*3%2==0 and i*3//2 < 10001:
-            if List[i*3//2]:
-                #print(i,i*3//2)
-                answer+=List[i]*List[i*3//2]
-        if i*2 and i*2<10001:
-            if List[i*2]:
-                #print(i,i*2)
-                answer+=List[i]*List[i*2]
-        if i*4%3==0 and i*4//3 < 10001:
-            if List[i*4//3]:
-                #print(i,i*4//3)
-                answer+=List[i]*List[i*4//3]
-        List[i]=0
+    div = 10
+    while storey > 0:
+        # print(storey)
+        if storey % div > 5:
+            # 더해
+            answer += 10 - (storey % div)
+            storey += 10 - (storey % div)
+        elif storey % div == 5: #나머지가 5다.
+            if storey > div and (storey // 10) % 10 > 4: #
+                answer += 10 - (storey % div)
+                storey += 10 - (storey % div)
+            else:
+                answer += storey % div
+                storey -= (storey % div)
+        else:
+            answer += storey % div
+            storey -= (storey % div)
+
+        storey //= div
+
     return answer
 
-# nC2 갯수 -> 그냥 계산 가능 (n*(n-1))//2
-'''testcase
-100,100,100,100,100,100->15
-100,100,100,100,100,100,200 ->21
-100,100,100,100,100,100,200,200,200 -> 36
+"""
+testcase
+5 -> 5
+6 -> 5
+2564 -> 15
+45 -> 9
+55 -> 10
+65 -> 9
+555 -> 14 *****
 
-'''
+"""
