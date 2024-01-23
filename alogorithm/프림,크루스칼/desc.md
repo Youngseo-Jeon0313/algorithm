@@ -8,7 +8,7 @@
 크루스칼의 핵심은 union find
 ```python
 def find(a):
-    if a == parent[a]:
+    if a == parent[a]: #여기 잊지 말 것 !!
         return a
     parent[a] = find(parent[a])
     return parent[a]
@@ -20,6 +20,10 @@ def union(a,b):
         parent[a]=b
     else:
         parent[b]=a
+
+# 유니온파인드 모두 끝난 후에 한 번 더 find해주는 게 좋다.
+for i in range(len(cards)):
+    find(i)
 ```
 
 **호출과 반환 로직 이해**   
