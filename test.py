@@ -1,41 +1,62 @@
-### 혼자 놀기의 달인
+# 17609
+'''
+1. 회문이라는 가정
+- 짝수
+- 홀수
+2. 유사회문이라는 가정
+- 짝수
+    - 왼쪽 꺼에서 한 개를 제외한다.
+    - 오른쪽 꺼에서 한 개를 제외한다.
+- 홀수
+    - 왼쪽 꺼에서 한 개를 제외한다.
+    - 오른쪽 꺼에서 한 개를 제외한다.
+'''
 
-from collections import defaultdict
 
+T = int(input())
 
-def solution(cards):
-    # cards = [2,4,5,1,3]
-    parent = [i for i in range(len(cards))]
-
-    def find(a):
-        if a == parent[a]: #여기 생각하기 !!
-            return a
-        parent[a] = find(parent[a])
-        return parent[a]
-
-    def union(a, b):
-        a = find(a)
-        b = find(b)
-        if b < a:
-            parent[a] = b
-        else:
-            parent[b] = a
-
+for _ in range(T):
     answer = 0
-    for i in range(len(cards)):
-        union(i, cards[i] - 1)
+    s = input()
 
-    for i in range(len(cards)):
-        find(i)
-    dict = defaultdict(int)
-    for j in parent:
-        dict[j] += 1
+    left = 0; right = len(s)-1
+    while left<right:
+        if s[left]==s[right]:
+            left+=1; right-=1
+        else:
+            answer=1
+            break
+    if answer ==0: print(0); continue
+    #유사회문이라고 가정
+    #왼쪽 꺼에서 한 개를 제외하겠다.
+    left = 0;
+    right = len(s) - 1
+    flag=0
+    while left < right:
+        #print(left, right, s[left], s[right])
+        if s[left] == s[right]:
+            left += 1; right -= 1
+        else:
+            if flag==0: left+=1; flag=1;
+            else: flag=2; break
+    if flag == 1:
+        answer = 1;
+        print(answer)
+        continue
+    #오른쪽 꺼에서 한 개를 제외하겠다.
+    left = 0;
+    right = len(s) - 1
+    flag = 0
+    while left < right:
+        #print(s[left], s[right])
+        if s[left] == s[right]:
+            left += 1;
+            right -= 1
+        else:
+            if flag == 0: right -= 1; flag = 1;
+            else:
+                flag = 2; break
+    if flag == 1: answer = 1;
+    else: answer = 2
 
-    List = list(dict.items())
-    List = sorted(List, key=lambda x: -x[1])
-    # 딕셔너리에서 가장 큰 거 두 개 가져오기
-    if len(List) == 1:
-        return 0
-    else:
-        answer = (List[0][1] * List[1][1])
-    return answer
+    print(answer)

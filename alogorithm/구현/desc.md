@@ -24,3 +24,9 @@ dict_reverse = dict((v,k) for k,v in dict.items())
 
 ### while문 
 시간초과 걱정하지말고 구현문제에 적절히 사용하자 !!
+
+### 조건문 주의
+**if문 주의** -> 이 if문을 나가면 아예 정답을 print하고 continue 시키는 게 나을 수도 있다.    
+정답이 중첩되거나 아예 출력되지 않는 이슈 확인하기
+**while True문**
+flag문을 여러 군데에, 여러 의도로 써야할 때 주의   
