@@ -1,3 +1,5 @@
+```python
+
 #[PG] 프로세스 - 큐!!
 
 from collections import deque
@@ -25,3 +27,5 @@ def solution(priorities, location):
                 index -= 1
 
     return answer
+
+```
