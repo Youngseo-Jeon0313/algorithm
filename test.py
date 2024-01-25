@@ -1,25 +1,30 @@
-# 세 용액 으로 0에 가장 가까운 용액들 찾기
-import sys
+## 프로그래머스 할인행사
+def check(number, now):
+    for i in range(len(number)):
+        if number[i]!=now[i]:
+            return False
+    return True
 
-n = int(input())
-array = list(map(int, input().split()))
-
-array.sort()
-ans = float('inf')
-
-for i in range(n - 2):
-    start = i + 1
-    end = n - 1
-    while start < end:
-        SUM = array[i] + array[start] + array[end]
-        if abs(SUM) < ans:
-            ans = abs(SUM)
-            result = [array[i], array[start], array[end]]
-        if SUM < 0:
-            start += 1
-        elif SUM > 0:
-            end -= 1
-        else:
-            break
-
-print(*result)
+#슬라이딩 윈도우 같은 투포인터
+def solution(want, number, discount):
+    answer=0
+    N = len(discount)
+    dict = {}
+    for i in range(len(want)):
+        dict[want[i]]=i
+    now = [0 for _ in range(len(want))]
+    #init
+    for j in range(10):
+        if discount[j] in dict.keys():
+            now[dict[discount[j]]]+=1
+    left=0; right = 10
+    while True:
+        if check(number, now):
+            answer+=1
+        if right==N: break
+        if discount[left] in dict.keys():
+            now[dict[discount[left]]]-=1;
+        if discount[right] in dict.keys():
+            now[dict[discount[right]]]+=1;
+        left+=1; right+=1;
+    return answer
