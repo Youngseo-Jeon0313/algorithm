@@ -1,4 +1,5 @@
-# N queens
+## Nqueens
+```
 n = int(input())
 
 ans = 0
@@ -25,3 +26,4 @@ def n_queens(x):
 
 n_queens(0)
 print(ans)
+```
