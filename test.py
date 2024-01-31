@@ -1,27 +1,25 @@
-# N queens
-n = int(input())
+# 백준 2110
 
-ans = 0
-row = [0] * n
+N, C = map(int,input().split())
+List = []
+for i in range(N):
+    num = int(input())
+    List.append(num)
+List.sort()
+left = 0; right =(List[-1]-List[0])*2
 
-def is_promising(x):
-    for i in range(x):
-        if row[x] == row[i] or abs(row[x] - row[i]) == abs(x - i):
-            #+나 X 형태의 경우는 갈 수 없다. 가지치기
-            return False
-    return True
-
-def n_queens(x):
-    global ans
-    if x == n:
-        ans += 1
-        return
+while left <= right:
+    mid = (right-left)//2
+    temp = 0; pos = List[0]
+    #일단 비교치를 위한 기준을 만든다.
+    for i in List:
+        if i-pos>mid:
+            pos = i;
+            temp+=1
+    if temp<C: #범위를 좁힌다.
+        mid = right-1
     else:
-        for i in range(n):
-            # [x, i]에 퀸을 놓겠다.
-            row[x] = i
-            if is_promising(x):
-                n_queens(x+1)
+        mid = left
+        answer = mid
 
-n_queens(0)
-print(ans)
+print(answer)
