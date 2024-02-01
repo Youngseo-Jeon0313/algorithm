@@ -1,25 +1,40 @@
-# 백준 2110
-
-N, C = map(int,input().split())
+# 백준 17179
+''' 간격에 들어맞니? 를 측정 '''
+N, M, L = map(int,input().split())
 List = []
-for i in range(N):
+for _ in range(M):
+    List.append(int(input()))
+List = sorted(List)
+List=[0]+List+[L]
+
+for _ in range(N):
+    answer = 0
     num = int(input())
-    List.append(num)
-List.sort()
-left = 0; right =(List[-1]-List[0])*2
+    left = 0; right = L;
+    while left<=right:
+        mid = (left+right)//2
+        temp = 0; cut_point = List[0]
+        for i in range(M+2):
+            if List[i]-cut_point>=mid:
+                temp+=1; cut_point = List[i]
+        #print(left, right, mid, temp)
+        if temp > num:
+            left = mid + 1
+            answer = mid
 
-while left <= right:
-    mid = (right-left)//2
-    temp = 0; pos = List[0]
-    #일단 비교치를 위한 기준을 만든다.
-    for i in List:
-        if i-pos>mid:
-            pos = i;
-            temp+=1
-    if temp<C: #범위를 좁힌다.
-        mid = right-1
-    else:
-        mid = left
-        answer = mid
+        else: #수가 더 크거나 같으면 위로위로 !
+            right = mid - 1
+    print(answer)
 
-print(answer)
+'''
+2 5 70
+10
+20
+35
+55
+60
+1
+
+답 : 35
+
+'''
