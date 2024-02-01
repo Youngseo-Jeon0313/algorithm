@@ -17,13 +17,14 @@ for _ in range(N):
         for i in range(M+2):
             if List[i]-cut_point>=mid:
                 temp+=1; cut_point = List[i]
-        #print(left, right, mid, temp)
+        print(left, right, mid, temp)
         if temp > num:
             left = mid + 1
             answer = mid
 
         else: #수가 더 크거나 같으면 위로위로 !
             right = mid - 1
+
     print(answer)
 
 '''
