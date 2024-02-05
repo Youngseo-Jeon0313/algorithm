@@ -1,15 +1,19 @@
-# [PJ] 땅따먹기
-
-def solution(land):
-    #land = [[1,2,3,4]]
+# [PJ] 디펜스 게임
+#그리디 + heapq
+import heapq
+def solution(n, k, enemy):
+    #n=10; k=8; enemy=[100,7,10,5,9,10,5,7,8,23,6,7,8,9] #result : 10
     answer = 0
-    DP = [[0 for _ in range(4)] for _ in range(len(land))]
-    # DP init
-    for i in range(4):
-        DP[0][i]=land[0][i]
-    for j in range(1, len(land)):
-        for k in range(4):
-            DP[j][k]=land[j][k]
-            DP[j][k]+=max(DP[j-1][(k+1)%4], DP[j-1][(k+2)%4], DP[j-1][(k+3)%4])
-    answer = (max(DP[len(land)-1]))
+    hq = []
+    for i in enemy:
+        heapq.heappush(hq, i)
+        if len(hq)>k: #k개보다 더 많아져서 한 개는 무조건 빼야함
+            num = heapq.heappop(hq)
+            if n-num>=0:
+                n-=num
+                answer+=1
+            else: break;
+        else:
+            answer+=1
+        #print(hq,i,answer)
     return answer
