@@ -1,19 +1,17 @@
-# [PJ] 디펜스 게임
-#그리디 + heapq
-import heapq
-def solution(n, k, enemy):
-    #n=10; k=8; enemy=[100,7,10,5,9,10,5,7,8,23,6,7,8,9] #result : 10
-    answer = 0
-    hq = []
-    for i in enemy:
-        heapq.heappush(hq, i)
-        if len(hq)>k: #k개보다 더 많아져서 한 개는 무조건 빼야함
-            num = heapq.heappop(hq)
-            if n-num>=0:
-                n-=num
-                answer+=1
-            else: break;
+# 산모양 타일링 [어려운 DP 문제 - 카카오 코테]
+def solution(n, tops):
+    MOD = 10007
+    a = [0] * (n + 1)
+    b = [0] * (n + 1)
+    a[0] = 0
+    b[0] = 1
+
+    for k in range(1, n + 1):
+        if tops[k - 1]:
+            a[k] = (a[k - 1] + b[k - 1]) % MOD
+            b[k] = (2 * a[k - 1] + 3 * b[k - 1]) % MOD
         else:
-            answer+=1
-        #print(hq,i,answer)
-    return answer
+            a[k] = (a[k - 1] + b[k - 1]) % MOD
+            b[k] = (a[k - 1] + 2 * b[k - 1]) % MOD
+
+    return (a[n] + b[n]) % MOD
