@@ -1,27 +1,41 @@
-# [PG] 더 맵게 - 힙
-import heapq
+# 프로그래머스 모두 0으로 만들기
 
-def solution(scoville, K):
-    # scoville = [1,1]; K=2
-    # scoville = [2,2,2,1,1,8,10,12]; K=1000 #-1
-    N = len(scoville)
-    heapq.heapify(scoville)
-    # -1인 경우부터 없애자
-    answer = 0
-    last_check = 0
-    while len(scoville) > 1:
-        min_1 = heapq.heappop(scoville)
-        if min_1 >= K:
-            heapq.heappush(scoville, min_1)
-            break
-        min_2 = heapq.heappop(scoville)
-        heapq.heappush(scoville, min_1 + min_2 * 2)
-        last_check = min_1 + min_2 * 2
-        answer += 1
+import sys
 
-    if answer == N - 1:
-        if last_check >= K:  # 2개인 경우 한 번 더 !!
-            return answer
-        else:
-            return -1
+sys.setrecursionlimit(300000)
+
+'''
+끝에 도달하면 ? -> 자기를 0으로 만들기 위해 부모에게 자기를 더해야 함.
+그럼 각각의 노드는 무엇을 반환해야 해? -> 자신의 값을 반환
+정답은 그 반환하는 전체 횟수가 중요함 -> abs(더하거나 빼는 행위의 값)
+
+'''
+
+answer = 0
+
+
+def solution(a, edges):
+    global answer
+    if sum(a) != 0: return -1
+    adj = [[] for _ in range(len(a))]
+    for i in edges:
+        adj[i[0]].append(i[1])
+        adj[i[1]].append(i[0])
+    visited = [0 for _ in range(len(a))]
+
+    def dfs(node):
+        global answer
+        visited[node] = 1
+        temp = 0
+        for i in adj[node]:
+            if not visited[i]:
+                check = dfs(i)
+                a[node] += check
+                answer += abs(check)
+                # print(check)
+
+        return a[node]
+
+    # print(a)
+    dfs(0)
     return answer
