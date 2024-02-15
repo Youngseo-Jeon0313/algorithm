@@ -1,41 +1,44 @@
-# 프로그래머스 모두 0으로 만들기
-
-import sys
-
-sys.setrecursionlimit(300000)
-
+# 프로그래머스 - 표현 가능한 이진트리
 '''
-끝에 도달하면 ? -> 자기를 0으로 만들기 위해 부모에게 자기를 더해야 함.
-그럼 각각의 노드는 무엇을 반환해야 해? -> 자신의 값을 반환
-정답은 그 반환하는 전체 횟수가 중요함 -> abs(더하거나 빼는 행위의 값)
-
+만들어지는 모든 이진수의 형태는 2^n-1이다. 그만큼 0을 앞에 채워야 함
+그렇다면 안되는 경우는 ? -> 왼쪽 오른쪽 중에 갔는데, 안쪽이 '0'이라면 그 묶음의 합은 0이어야 한다.
+0초과면 안됨으로 처리
 '''
+import math
 
-answer = 0
 
+def solution(numbers):
+    answer = []
 
-def solution(a, edges):
-    global answer
-    if sum(a) != 0: return -1
-    adj = [[] for _ in range(len(a))]
-    for i in edges:
-        adj[i[0]].append(i[1])
-        adj[i[1]].append(i[0])
-    visited = [0 for _ in range(len(a))]
+    def dfs(num):
+        # print(num)
+        if len(num) == 1:  # 된다.
+            return 0
 
-    def dfs(node):
-        global answer
-        visited[node] = 1
-        temp = 0
-        for i in adj[node]:
-            if not visited[i]:
-                check = dfs(i)
-                a[node] += check
-                answer += abs(check)
-                # print(check)
+        num_len = len(num) // 2
+        left = num[:num_len]
+        mid = num[num_len]
+        right = num[(num_len + 1):]
 
-        return a[node]
+        if mid == '1':  # 된다.
+            return dfs(left) + dfs(right)
+        else:  # 밑에가 다 0이여야 함
+            if '1' in left + right:
+                return 1
+            else:
+                return 0
 
-    # print(a)
-    dfs(0)
+    for i in numbers:
+        num = (bin(i))[2:]
+        LEN = len(num)
+        N = math.ceil(math.log2(LEN + 1))
+        num = num.zfill(2 ** (N) - 1)
+        # print(num)
+        ans = dfs(num)
+        if ans == 0:
+            answer.append(1)  # 싹 다 0이 나와야지만 가능 !
+        else:
+            answer.append(0)
+
+        # print("=====================")
     return answer
