@@ -1,44 +1,42 @@
-# 프로그래머스 - 표현 가능한 이진트리
-'''
-만들어지는 모든 이진수의 형태는 2^n-1이다. 그만큼 0을 앞에 채워야 함
-그렇다면 안되는 경우는 ? -> 왼쪽 오른쪽 중에 갔는데, 안쪽이 '0'이라면 그 묶음의 합은 0이어야 한다.
-0초과면 안됨으로 처리
-'''
-import math
-
-
-def solution(numbers):
-    answer = []
-
-    def dfs(num):
-        # print(num)
-        if len(num) == 1:  # 된다.
-            return 0
-
-        num_len = len(num) // 2
-        left = num[:num_len]
-        mid = num[num_len]
-        right = num[(num_len + 1):]
-
-        if mid == '1':  # 된다.
-            return dfs(left) + dfs(right)
-        else:  # 밑에가 다 0이여야 함
-            if '1' in left + right:
-                return 1
-            else:
-                return 0
-
-    for i in numbers:
-        num = (bin(i))[2:]
-        LEN = len(num)
-        N = math.ceil(math.log2(LEN + 1))
-        num = num.zfill(2 ** (N) - 1)
-        # print(num)
-        ans = dfs(num)
-        if ans == 0:
-            answer.append(1)  # 싹 다 0이 나와야지만 가능 !
+def solution(beginning, target):
+    answer = 0
+    row = len(beginning[0]); col = len(beginning) #열, 행
+    
+    change_spot = [['0' for _ in range(row)] for _ in range(col)]
+    
+    for i in range(col):
+        for j in range(row):
+            if beginning[i][j]!=target[i][j]:
+                change_spot[i][j]='1'
+    standard = '0'
+    for a in change_spot:
+        if '1' in a:
+            standard=''.join(a)
+            break;
+    for b in change_spot:
+        compare = int(''.join(b),2)^int(standard,2)
+        if compare == 0 or compare == 2**(len(change_spot[0]))-1:
+            continue
+        else: 
+            return -1
+    #일단 된다는 가정하에 최소 찾기
+    answer_1 = 0; str_1='';
+    answer_2 = 0; str_2='';
+    for b in change_spot:
+        compare = int(''.join(b),2)^int(standard,2)
+        if compare == 0:
+            answer_2 +=1
+            str_1=b
         else:
-            answer.append(0)
-
-        # print("=====================")
-    return answer
+            answer_1+=1
+            str_2=b
+    #print(answer_1, str_1, answer_2, str_2)
+    for i in str_1: 
+        if i=='1':
+            answer_1+=1
+    for j in str_2:
+        if j=='1':
+            answer_2+=1
+            
+    return min(answer_1, answer_2)
+    
