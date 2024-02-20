@@ -1,42 +1,37 @@
-def solution(beginning, target):
-    answer = 0
-    row = len(beginning[0]); col = len(beginning) #열, 행
+'''
+BFS? 다익스트라?
+0인 곳을 우선적으로 도는 것이 좋다. 
+그러다가 (N, M) 목적지에 다다르면 끝 !
+'''
+
+import heapq
+
+dx, dy = [0,0,-1,1], [-1,1,0,0]
+
+N, M = map(int,input().split())
+List = []
+for _ in range(M):
+    List.append(list(input()))
+
+for i in range(M):
+    for j in range(N):
+        List[i][j]=int(List[i][j])
+
+hq = []
+heapq.heapify(hq)
+dist = [[float('inf') for _ in range(N)] for _ in range(M)]
+heapq.heappush(hq, [List[0][0],List[0][0],0,0]) #벽 부순 갯수, 그 방의 상태, y,x,
+dist[0][0]=List[0][0]
+while hq:
+    #print(dist)
+    count, status, y, x = heapq.heappop(hq)
+    if y==M-1 and x==N-1: 
+        print(dist[M-1][N-1]);exit()
+    for i in range(4):
+        ny, nx = y+dy[i], x+dx[i]
+        if 0<=ny<M and 0<=nx<N:
+            if dist[ny][nx]>dist[y][x]+List[ny][nx]:
+                dist[ny][nx]=dist[y][x]+List[ny][nx]
+                heapq.heappush(hq, [dist[ny][nx], List[ny][nx],ny, nx])
     
-    change_spot = [['0' for _ in range(row)] for _ in range(col)]
-    
-    for i in range(col):
-        for j in range(row):
-            if beginning[i][j]!=target[i][j]:
-                change_spot[i][j]='1'
-    standard = '0'
-    for a in change_spot:
-        if '1' in a:
-            standard=''.join(a)
-            break;
-    for b in change_spot:
-        compare = int(''.join(b),2)^int(standard,2)
-        if compare == 0 or compare == 2**(len(change_spot[0]))-1:
-            continue
-        else: 
-            return -1
-    #일단 된다는 가정하에 최소 찾기
-    answer_1 = 0; str_1='';
-    answer_2 = 0; str_2='';
-    for b in change_spot:
-        compare = int(''.join(b),2)^int(standard,2)
-        if compare == 0:
-            answer_2 +=1
-            str_1=b
-        else:
-            answer_1+=1
-            str_2=b
-    #print(answer_1, str_1, answer_2, str_2)
-    for i in str_1: 
-        if i=='1':
-            answer_1+=1
-    for j in str_2:
-        if j=='1':
-            answer_2+=1
-            
-    return min(answer_1, answer_2)
-    
+print(dist[M-1][N-1])
