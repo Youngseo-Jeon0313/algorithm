@@ -1,37 +1,55 @@
 '''
-BFS? 다익스트라?
-0인 곳을 우선적으로 도는 것이 좋다. 
-그러다가 (N, M) 목적지에 다다르면 끝 !
+최단거리로 갈 때 g->h를 거쳤는가??
+거친 곳을 저장하면서 가는 건 불가능. flag 를 두자. 
+여러 미세한 잔실수가 많았다.
+1. set은 정렬을 해주는가? print(set([1,2])==set([2,1])) -> True
+2. for 문을 계속해서 돌 때 flag를 그냥 막바로 -1로 할당하면 뒤에 for문에 당연히,, 지장이 간다 !
 '''
 
 import heapq
+INF = int(1e9)
 
-dx, dy = [0,0,-1,1], [-1,1,0,0]
+T = int(input())
+for _ in range(T):
+    answer=[]
+    hq = []
+    heapq.heapify(hq)
+    #교차로, 도로, 목적지 후보 갯수
+    n,m,t = map(int,input().split()) 
+    #예술가들의 출발지, 개가 지나간 교차로 g,h
+    s,g,h=map(int,input().split())
+    adj=[[] for _ in range(n+1)]
+    for _ in range(m):
+        a,b,d=map(int,input().split())
+        adj[a].append([b,d])
+        adj[b].append([a,d])
+    dest=set()
+    for _ in range(t):
+        #목적지 후보들
+        x=int(input())
+        dest.add(x)
+    dist=[INF for _ in range(n+1)]
+    heapq.heappush(hq, [0,0,s]) #지금까지 든 비용, g-h를 지나간 적이 있는가, 현재 위치, 
+    flagList = [0 for _ in range(n+1)]
+    while hq:
+        #print(hq)
+        cost, flag, node =heapq.heappop(hq)
+        if dist[node]<=cost: continue
+        
+        dist[node]=cost
+        flagList[node]=flag
 
-N, M = map(int,input().split())
-List = []
-for _ in range(M):
-    List.append(list(input()))
-
-for i in range(M):
-    for j in range(N):
-        List[i][j]=int(List[i][j])
-
-hq = []
-heapq.heapify(hq)
-dist = [[float('inf') for _ in range(N)] for _ in range(M)]
-heapq.heappush(hq, [List[0][0],List[0][0],0,0]) #벽 부순 갯수, 그 방의 상태, y,x,
-dist[0][0]=List[0][0]
-while hq:
+        for next, next_dist in adj[node]:
+            temp_cost = dist[node]+next_dist
+            if dist[next]>=temp_cost:
+                if (next, node)==(g,h) or (node, next)==(g,h): 
+                    heapq.heappush(hq,[temp_cost,-1,next])
+                else:
+                    heapq.heappush(hq,[temp_cost,flag,next])
+    #print(flagList)
     #print(dist)
-    count, status, y, x = heapq.heappop(hq)
-    if y==M-1 and x==N-1: 
-        print(dist[M-1][N-1]);exit()
-    for i in range(4):
-        ny, nx = y+dy[i], x+dx[i]
-        if 0<=ny<M and 0<=nx<N:
-            if dist[ny][nx]>dist[y][x]+List[ny][nx]:
-                dist[ny][nx]=dist[y][x]+List[ny][nx]
-                heapq.heappush(hq, [dist[ny][nx], List[ny][nx],ny, nx])
-    
-print(dist[M-1][N-1])
+    for i in dest:
+        if flagList[i]:
+            answer.append(i)
+    answer=sorted(answer)
+    print(*answer)
