@@ -1,25 +1,35 @@
-# 백준 5972
+# 백준 1719
 
 import heapq
 
 N, M = map(int,input().split())
 adj = [[] for _ in range(N+1)]
 for _ in range(M):
-    a, b, cost = map(int,input().split())
-    adj[a].append([b,cost])
-    adj[b].append([a,cost])
+    a, b, cost= map(int,input().split())
+    adj[a].append((b,cost))
+    adj[b].append((a,cost))
 
-dist = [float('inf') for _ in range(N+1)]
+
+dist_answer = [['' for _ in range(N+1)] for _ in range(N+1)] #여기 다시 살피기
 def dijkstra(start):
-    dist[start]=0
-    hq = [[0, start]] #cost, curr_node
+    dist = [float('inf') for _ in range(N+1)]
+    hq = []
     heapq.heapify(hq)
+    heapq.heappush(hq, [0,start,'-']) #cost, curr_node, 가장 먼저 가야 하는 곳
     while hq:
-        cost, curr_node = heapq.heappop(hq)
+        cost, curr_node, temp_ans = heapq.heappop(hq)
+        if cost>dist[curr_node]: continue # 꺼낼 때 dist 할당하는 방법
+        dist[curr_node]=cost
+        dist_answer[start][curr_node]=temp_ans
         for next_node, next_cost in adj[curr_node]:
             if dist[next_node]>cost+next_cost:
-                dist[next_node]=cost+next_cost
-                heapq.heappush(hq, [dist[next_node], next_node])
-        #print(hq)
-dijkstra(1)
-print(dist[N])
+                if temp_ans=='-':
+                    heapq.heappush(hq, [cost+next_cost, next_node, next_node]) # 여기 부분 주의
+                else:
+                    heapq.heappush(hq, [cost+next_cost, next_node, temp_ans])
+for i in range(1,N+1):
+    dijkstra(i)
+for i in range(1,N+1):
+    for j in range(1,N+1):
+        print(dist_answer[i][j], end=' ')
+    print()
