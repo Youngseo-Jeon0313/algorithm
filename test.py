@@ -1,32 +1,22 @@
-import math
-#for문 + 조회
-N,Q=map(int,input().split())
-List=list(map(int,input().split()))
-arr=[0 for _ in range(10001)]
-for i in range(N):
-    arr[List[i]]+=1
-
-for _ in range(Q):
-    a,b=map(int,input().split())
-    flag=False
-    if a==1:
-        # ZeroDivision
-        if b==0 and sum(arr)>=2 and arr[0]>0: 
-            flag=True
+N = int(input())
+stack = []
+answer = 0
+for step in range(N):
+    L = list(map(int,input().split()))
+    if len(L)>1 and L[0]==1:
+        #일단 얘 시작해. 그리고 넣어.
+        L[2]-=1
+        if L[2]==0:
+            answer+=L[1]
         else:
-            for i in range(1,10001):
-                if b%i==0 and arr[i]>0:
-                    #제곱일 경우
-                    if i*i==b:
-                        if arr[i]>=2:
-                            flag=True
-                    else:
-                        if len(arr)>b//i and arr[b//i]>0: 
-                            flag=True
-                        
-        if flag: 
-            print(1)
-        else:
-            print(0)
-    elif a==2 :
-        arr[List[b-1]]-=1; arr[0]+=1; List[b-1]=0
+            stack.append(L)
+    else:
+        if stack:
+            a = stack.pop()
+            a[2]-=1
+            if a[2]==0:
+                answer+=a[1]
+            else:
+                stack.append(a)
+#print(stack)
+print(answer)

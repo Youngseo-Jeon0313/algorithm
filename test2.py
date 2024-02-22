@@ -1,28 +1,24 @@
-"""이 문제가 브루트 포스인데,
+from collections import deque
+N = int(input())
+arr = [[0,0]for _ in range(N)]
+answer = float('inf')
 
-주어지는 2차원 배열에서 2개의 조합들을 모두 꺼내서 곱한게 40(예제1 기준)인 걸 찾으려면 시간복잡도가 O(N^2)이 돼!
+for i in range(N-1):
+    a, b = map(int,input().split())
+    arr[i][0]=a; arr[i][1]=b;
 
-그래서 이걸 극복하기 위해서 배열을 하나 만들어서 arr[숫자] = 해당 숫자 갯수 로 마치 visited 배열처럼? 만들어서
+K = int(input())
+q = deque([]) 
+q.append((0,0,0)) #node, flag, score
 
-만약 40을 찾으려고 하면
-
-for 문으로 일단 List를 하나씩 돌고(O(N)), 만약 4를 발견하면 → 10 이 있는지 를 확인(O(1))하는 로직으로 푸는 문제얌 ! 
-
-이 때 “서로 다른 두 수 i,j”라는 조건을 조심해야 행
-
-투포인터도 O(N)이고 좋은 접근인 것 같아 ! 근데 투포인터는 일단 정렬을 해두고 시작해야 하는데, 
-
-쿼리 2의 경우에는 2 i 에서 배열의 i번째 원소를 0으로 바꾸니까 이게 문제일 것 같아ㅠㅠㅠ 
-
-4 6 7 10  이렇게 있다가 4 0 7 10 이렇게 두번째 원소가 바뀌면 이미 정렬 조건이 뿌셔져 !"""
-
-
-"""
-1.
-서로 다른 두 수 i,j 주의 !
-
-2.
-리스트 속 원소의 갯수 주의하기 !
-
-
-"""
+while q:
+    node, flag, score = q.popleft()
+    if node==N-1:
+        answer = min(answer, score)
+    if node+1<N:
+        q.append((node+1, flag, score+arr[node][0]))
+    if node+2<N:
+        q.append((node+2, flag, score+arr[node][1]))
+    if node+3<N and flag==0:
+        q.append((node+3, 1, score+K))
+print(answer)
