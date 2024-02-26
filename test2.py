@@ -1,24 +1,34 @@
-from collections import deque
-N = int(input())
-arr = [[0,0]for _ in range(N)]
-answer = float('inf')
+# 28081
+'''
+좌표로 접근하면 안됨 10^9임 !
+'''
 
-for i in range(N-1):
-    a, b = map(int,input().split())
-    arr[i][0]=a; arr[i][1]=b;
+W,H,K = map(int,input().split())
+N = int(input()) #가로 방향 커팅 수
+List_N = list(map(int,input().split()))
+M = int(input())
+List_M = list(map(int,input().split()))
 
-K = int(input())
-q = deque([]) 
-q.append((0,0,0)) #node, flag, score
+List_N=[0]+List_N+[H]
+List_M=[0]+List_M+[W]
 
-while q:
-    node, flag, score = q.popleft()
-    if node==N-1:
-        answer = min(answer, score)
-    if node+1<N:
-        q.append((node+1, flag, score+arr[node][0]))
-    if node+2<N:
-        q.append((node+2, flag, score+arr[node][1]))
-    if node+3<N and flag==0:
-        q.append((node+3, 1, score+K))
-print(answer)
+first = []
+second = []
+for i in range(N+1):
+    first.append(List_N[i+1]-List_N[i])
+for i in range(M+1):
+    second.append(List_M[i+1]-List_M[i])
+first.sort()
+second.sort()
+answer = 0
+pointer = M
+for i in first:
+    #print('i',i,'pointer',pointer)
+    while pointer>=0:
+        if i*second[pointer]<=K:
+            answer+=pointer+1
+            break;
+        else:
+            pointer-=1
+
+print(answer) 
