@@ -1,34 +1,71 @@
-# 28081
-'''
-좌표로 접근하면 안됨 10^9임 !
-'''
+from collections import deque
 
-W,H,K = map(int,input().split())
-N = int(input()) #가로 방향 커팅 수
-List_N = list(map(int,input().split()))
-M = int(input())
-List_M = list(map(int,input().split()))
+# 2072
+def bfs(board,row,col,color):
+    visited=[[0 for _ in range(20)] for _ in range(20)]
+    #위아래
+    ans_1 = 1
+    deq = deque([])
+    deq.append([row,col])
+    while deq:
+        ny, nx = deq.popleft()
+        visited[ny][nx]=1
+        for dy,dx in [[-1,0], [1,0]]:
+            if 1<=ny+dy<20 and 1<=nx+dx<20:
+                if not visited[ny+dy][nx+dx] and board[ny+dy][nx+dx]==color:
+                    visited[ny+dy][nx+dx]=1
+                    ans_1+=1
+                    deq.append([ny+dy,nx+dx])
+    # 양옆
+    ans_2 = 1
+    deq = deque([])
+    deq.append([row,col])
+    while deq:
+        ny, nx = deq.popleft()
+        visited[ny][nx]=1
+        for dy,dx in [[0,1], [0,-1]]:
+            if 1<=ny+dy<20 and 1<=nx+dx<20:
+                if not visited[ny+dy][nx+dx] and board[ny+dy][nx+dx]==color:
+                    visited[ny+dy][nx+dx]=1
+                    ans_2+=1
+                    deq.append([ny+dy,nx+dx])  
+    # 오른쪽 대각선
+    ans_3 = 1
+    deq = deque([])
+    deq.append([row,col])
+    while deq:
+        ny, nx = deq.popleft()
+        visited[ny][nx]=1
+        for dy,dx in [[1,1], [-1,-1]]:
+            if 1<=ny+dy<20 and 1<=nx+dx<20:
+                if not visited[ny+dy][nx+dx] and board[ny+dy][nx+dx]==color:
+                    visited[ny+dy][nx+dx]=1
+                    ans_3+=1
+                    deq.append([ny+dy,nx+dx])  
+    # 왼쪽 대각선
+    ans_4 = 1
+    deq = deque([])
+    deq.append([row,col])
+    while deq:
+        ny, nx = deq.popleft()
+        visited[ny][nx]=1
+        for dy,dx in [[-1,1], [1,-1]]:
+            if 1<=ny+dy<20 and 1<=nx+dx<20:
+                if not visited[ny+dy][nx+dx] and board[ny+dy][nx+dx]==color:
+                    visited[ny+dy][nx+dx]=1
+                    ans_4+=1
+                    deq.append([ny+dy,nx+dx])  
+    if (ans_1 == 5 or ans_2 ==5 or ans_3 ==5 or ans_4 ==5):
+        return True
+    return False
 
-List_N=[0]+List_N+[H]
-List_M=[0]+List_M+[W]
-
-first = []
-second = []
-for i in range(N+1):
-    first.append(List_N[i+1]-List_N[i])
-for i in range(M+1):
-    second.append(List_M[i+1]-List_M[i])
-first.sort()
-second.sort()
-answer = 0
-pointer = M
-for i in first:
-    #print('i',i,'pointer',pointer)
-    while pointer>=0:
-        if i*second[pointer]<=K:
-            answer+=pointer+1
-            break;
-        else:
-            pointer-=1
-
-print(answer) 
+N = int(input()) # 좌표는 19x19
+BOARD = [[-1 for _ in range(20)] for _ in range(20)]
+for i in range(N): # 홀수 흑, 짝수 백
+    row,col = map(int,input().split())
+    #일단 넣고
+    BOARD[row][col]=i%2
+    if bfs(BOARD,row,col,i%2): 
+        print(i+1); exit()
+print(-1)
+    
