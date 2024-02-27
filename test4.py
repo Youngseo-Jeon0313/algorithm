@@ -1,35 +1,36 @@
-import sys
-input = sys.stdin.readline
-
-answer = float('inf')
-answer_List = []
-def back(node,a,b,c,d,cost):
-    global answer; global answer_List;
-    if cost>answer: return
-    if a>=cond[0] and b>=cond[1] and c>=cond[2] and d>=cond[3]:
-        if answer>cost:
-            answer = cost
-            answer_List = visited.copy()
-        return
-    for j in range(node,N-1):
-        print(j+1)
-        target = j+1
-        visited.append(target)
-        temp_a, temp_b, temp_c, temp_d, temp_e = List[target]
-        back(target,a+temp_a,b+temp_b,c+temp_c,d+temp_d,cost+temp_e)
-        visited.pop()
-N=int(input()) # N이 작아서 브루트포스
-visited = []
-cond = list(map(int,input().split()))
-List = []
-for i in range(N):
-    List.append(list(map(int,input().split())))
-
-back(-1,0,0,0,0, 0)
-if answer==float('inf'):
-    print(-1); exit()
-print(answer)
-for index in range(N):
-    if answer_List[index]:
-        print(index+1, end =' ')
-print()
+import heapq
+# 9694 - 다익스트라
+T = int(input())
+for testcase in range(T):
+    N, M = map(int,input().split())
+    adj = [[] for _ in range(M)]
+    dist = [float('inf') for _ in range(M)]
+    dist_info = [0 for _ in range(M)] # from:array[index] to:index
+    for _ in range(N): # 관계의 수
+        x,y,z = map(int,input().split())
+        adj[x].append((y,z))
+        adj[y].append((x,z))
+    hq = []
+    heapq.heapify(hq)
+    heapq.heappush(hq, [0, 0]) #cost, start
+    dist[0]=0
+    while hq:
+        cost, curr_node = heapq.heappop(hq)
+        for next_node, next_cost in adj[curr_node]:
+            if dist[next_node]>cost+next_cost:
+                dist[next_node]=cost+next_cost
+                dist_info[next_node]=curr_node
+                heapq.heappush(hq, (dist[next_node], next_node))
+    if dist[M-1]==float('inf'): 
+        print('Case #{}: {}'.format(testcase+1, -1))
+    else:
+        to = M-1
+        answer = []
+        while True:
+            answer.append(to)
+            if to==0:break
+            to=dist_info[to]
+        answer_str = ''
+        for i in answer:
+            answer_str=str(i)+' '+answer_str
+        print('Case #{}: {}'.format(testcase+1, answer_str ))
