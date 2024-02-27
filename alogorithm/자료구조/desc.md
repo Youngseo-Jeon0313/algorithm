@@ -50,6 +50,7 @@ dict는 key가 문장일 때 강력하다.
 menus = [{} for _ in range(11)]
 
 - dict가 주는 장점 !! -> O(1) 의 시간복잡도를 가진다는 것이다.
+how? -> hash table 로 이루어져 있다고 간단히 이해하자.
 ex. [PG]달리기 경주 
 .index() 로 가져올 때 O(N)이 걸리는 문제를 최적화하기 위해 dictionary를 쓸 수 있다. 
 
