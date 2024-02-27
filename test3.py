@@ -1,17 +1,26 @@
-# 2229
-# step DP
-
+16678
 N = int(input())
-List = list(map(int,input().split()))
-DP = [[0 for _ in range(N)] for _ in range(N)]
+List = []
+for _ in range(N):
+    List.append(int(input()))
+List.sort()
+target = [i+1 for i in range(N)]
+answer = 0
 for i in range(N):
-    for j in range(i,N):
-        DP[i][j]=abs(List[i]-List[j])
-# print(DP)
-for step in range(N): 
-    for i in range(N-step):
-        for j in range(i,i+step):
-            #print(step,i,j)
-            DP[i][i+step]=max(DP[i][i+step],DP[i][j]+DP[j+1][i+step])
+    answer+=max(0,List[i]-target[i])
+print(answer)
 
-print(DP[0][N-1])
+# N = int(input())
+# honors = []
+# for _ in range(N):
+#     honors.append(int(input()))
+
+# max_honor = 1
+# action = 0
+
+# for num in sorted(honors): #정렬 먼저
+#     if num >= max_honor: 
+#         action += num - max_honor
+#         max_honor += 1
+
+# print(action)
