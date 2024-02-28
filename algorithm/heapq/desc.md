@@ -8,5 +8,4 @@ heapq.heappush(hq, (우선순위1, 우선순위2, 우선순위3 ..))
 
 - 시간복잡도    
 push, pop 모두 O(log N)에 해당한다.
-
- 
+build시, 즉 heapify 시 O(N) 소요
