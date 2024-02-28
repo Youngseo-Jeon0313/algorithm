@@ -1,45 +1,37 @@
+#1614
+
 '''
-웬만하면 '어떤 원소가 들어있는지'를 확인하려고 할 때 
-dictionary를 쓰자 ! hash 형태로 저장하고 있기 때문에 조회시 O(1)이 걸림
-dictionary = hash table
+1 -> 8번째마다
+2 -> (6,2) 번째마다
+3 -> 4번째마다
+4 -> (2,6) 번째마다
+5 -> 8번째마다
+
+
 '''
-
-
-import sys
-input = sys.stdin.readline
-
-# 22232
-N, M = map(int,input().split())
-files = []
-for _ in range(N):
-    files.append(input().rstrip())
-extensions = {}
-for _ in range(M):
-    extensions[(input().rstrip())]=1
-
-# 먼저 그룹으로 나눈다. -> 딕셔너리
-dict = {}
-for i in files:
-    name, extension = i.split('.')
-    if name in dict.keys():
-        dict[name].append(extension)
-    else:
-        dict[name] = [extension]
-
-List = list(dict.items())
-List.sort()
-
-for key, values in List:
-    os_ok = []; os_no = []
-    # os에서 인식하는 게 있는 것들
-    for extension in values:
-        if extension in extensions.keys():
-            os_ok.append(extension)
-        # 없는 것들
+N = int(input())
+M = int(input())
+answer = 0 #N이 M번째 출몰하는 위치
+answer = N
+if N==1:
+    for i in range(1,M+1):
+        answer+=8
+elif N==2:
+    for i in range(1,M+1):
+        if i%2:
+            answer+=6
         else:
-            os_no.append(extension)
-    os_ok.sort(); os_no.sort()
-    for extension in os_ok:
-        print(key+'.'+ extension)
-    for extension in os_no:
-        print(key+'.'+extension)
+            answer+=2
+elif N==3:
+    for i in range(1,M+1):
+        answer+=4
+elif N==4:
+    for i in range(1,M+1):
+        if i%2:
+            answer+=2
+        else:
+            answer+=6
+else:
+    for i in range(1,M+1):
+        answer+=8
+print(answer-1)
