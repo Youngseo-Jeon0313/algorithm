@@ -1,21 +1,37 @@
-# 1788
-MOD = 1000000000
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
 
-N = int(input())
-if N==0:
-    print(0)
-elif N>0:
-    print(1)
-else:
-    if N%2:
-        print(1)
-    else:
-        print(-1)
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
 
-DP = [0 for _ in range(1000000+1)]
-DP[1]=1
-for i in range(2,1000000+1):
-    DP[i]=(DP[i-2]+DP[i-1])%MOD
+    left = merge_sort(left) #재귀
+    right = merge_sort(right)
 
-abs_N = abs(N)
-print(DP[abs_N]%MOD)
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = 0
+    j = 0
+
+    while i < len(left) and j < len(right): #차례대로 한 개씩 비교하며 merge 시킨다.
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    while i < len(left):
+        result.append(left[i])
+        i += 1
+
+    while j < len(right):
+        result.append(right[j])
+        j += 1
+
+    return result
+
+print(merge_sort([2,14,5,1,4,8,23,6]))
