@@ -1,19 +1,16 @@
-T = 0
+# 모두 다를 때 surprising
+
 while True:
-    T+=1
-    answer = 0
+    flag=True
     s = input()
-    if s[0]=='-': break
-    stack = []
-    for word in s:
-        if word =='{':
-            stack.append(word)
-        else:
-            if stack:
-                stack.pop()
-            else:
-                answer +=1
-                stack.append('{')
-    if stack:
-        answer+=len(stack)//2
-    print(str(T)+'. '+str(answer))
+    if s=='*': break
+    for i in range(1,len(s)): #step
+        List = []
+        for j in range(len(s)-i):
+            List.append(s[j]+s[j+i])
+        if len(List)!=len(set(List)):
+            flag=False
+    if flag:
+        print(s+' is surprising.')
+    else:
+        print(s+' is NOT surprising.')
