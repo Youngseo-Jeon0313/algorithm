@@ -1,26 +1,34 @@
-'''
-결국 같은 패턴이 반복되다가 처음 상태가 나오게 될 것이다!
-'''
+import sys
+input = sys.stdin.readline
 
+# 10971 외판원 순회 2
+'''
+어느 한 도시에서 출발해 N 개의 도시를 모두 거쳐 다시 원래의 도시로 돌아오는 순회 여행 경로
+-> 어차피 0, 1, 2, 3 을 거치니까 결국 0부터 해도 ㄱㅊ!
+'''
 N = int(input())
-P = list(map(int,input().split())) 
-S = list(map(int,input().split()))# i번째 원소를 Si번째로
-target = [0,1,2]*(N//3)
+answer = float('inf')
+List = []
+for _ in range(N):
+    List.append(list(map(int,input().split())))
 
-temp_P = P.copy()
-answer = 0
-while True:
-    if temp_P==target:
-        print(answer)
-        break;
-    answer+=1
-    #처리!
-    temp_List = temp_P.copy()
+
+def dfs(depth, node, cost, start): 
+    global answer
+    if depth==N-1 and List[node][start]>0:
+        answer = min(answer, cost+List[node][start])
     for i in range(N):
-        temp_List[S[i]] = temp_P[i]
-    temp_P = temp_List.copy()
-    
-    if temp_P==P:
-        print(-1)
-        break
+        if not visited[i] and List[node][i]>0:
+            visited[i]=1
+            dfs(depth+1, i, cost+List[node][i], start)
+            visited[i]=0
 
+
+#시작
+for start in range(N):
+    visited = [0 for _ in range(N)]
+    visited[start]=1
+    dfs(0, start, 0, start)
+    visited[start]=0
+
+print(answer)
