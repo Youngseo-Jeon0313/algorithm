@@ -37,3 +37,7 @@ for i in range(len(cards)):
 - parent[3]=3으로 update하고 3반환
 
 <결과> parent= [0,1,2,3,3,3,3,7,8,9]   
+
+## 아이디어 - 여러 상황을 거듭하며 merget하는 과정을 거칠 때 
+ex. [PG] [표 병합](https://school.programmers.co.kr/learn/courses/30/lessons/150366)
+
