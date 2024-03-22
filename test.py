@@ -1,36 +1,23 @@
-N = int(input())
-S = input()
-if N==1: 
-    print(S)
-    exit()
-answer = -float('inf')
-def back(operation_list):
-    #print(operation_list)
-    global answer
-    temp = 0
-    stack = []
-    # 우선 현재까지의 연산 실행
-    for i in range(1,N,2):
-        if i in operation_list:
-            stack.append('('+S[i-1:i+2]+')')
-        else:
-            if i==1:
-                stack.append(S[0])
-            if i+2 in operation_list:
-                stack.append(S[i])
-            else:
-                stack.append(S[i:i+2])
-    #print(stack)
-    temp = eval(''.join(stack))
-    answer = max(answer, temp)
-    # 두 개 뒤부터 수행 가능
-    if operation_list:
-        for i in range(operation_list[-1]+4,N,2):
-            back(operation_list+[i])
-    else:
-        for i in range(1,N,2):
-            back(operation_list+[i])
-        
+# 구현 문제 그냥 브루트포스
 
-back([])
-print(answer)
+from itertools import product
+
+def solution(users, emoticons):
+    data = list(product([10,20,30,40], repeat=len(emoticons)))
+
+    answer = [0,0]
+    for discountSort in data:
+        emoticon_plus_num = 0
+        emoticon_cost = 0
+        for target_type, target_price in users:
+            user_sum = 0
+            for i, emoticon in enumerate(emoticons):
+                if target_type <= discountSort[i]:
+                    user_sum += int(emoticon // 100 * (100 - discountSort[i]))
+            if user_sum>=target_price:
+                emoticon_plus_num+=1
+            else:
+                emoticon_cost+=user_sum
+        answer = max(answer, [emoticon_plus_num, emoticon_cost])    
+            
+    return answer
