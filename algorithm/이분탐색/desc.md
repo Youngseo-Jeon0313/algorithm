@@ -6,7 +6,7 @@
 
 ### 파이썬 upper bound, lower bound
 ```python
-def upperbound(array, k): # k 초과 값이 처음 나오는 위치
+def upperbound(array, k): # k 이상 값이 처음 나오는 위치
     left = 0
     right = len(array)
 
@@ -19,11 +19,11 @@ def upperbound(array, k): # k 초과 값이 처음 나오는 위치
         else:
             left = mid + 1
 
-    return left
+    return left //3
 ```
 
 ```python
-def lowerbound(array, k): #k 이상 값이 처음 나오는 위치
+def lowerbound(array, k): #k 초과 값이 처음 나오는 위치
     left = 0
     right = len(array)
     
@@ -36,7 +36,7 @@ def lowerbound(array, k): #k 이상 값이 처음 나오는 위치
         else:
             left = mid + 1
 
-    return left  
+    return left  //6
 ```
 ![img.png](img.png)
 
