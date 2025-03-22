@@ -54,6 +54,10 @@ how? -> hash table 로 이루어져 있다고 간단히 이해하자.
 ex. [PG]달리기 경주 
 .index() 로 가져올 때 O(N)이 걸리는 문제를 최적화하기 위해 dictionary를 쓸 수 있다. 
 
+- dictionary 관련 헷갈리는 함수들
+  - 삭제 연산: del(dict['one']) 
+  - 합체 연산: dic1.update(dic2) # dic1에 dic2를 덮어씌움
+
 ### queue
 - ex. [PG] 프로세스 - 큐!!
 deq을 이용해 프로세스 중 어떤 한 원소가 언제 처리되는지에 대해 알아보는 문제 ! 매우 좋음...   
